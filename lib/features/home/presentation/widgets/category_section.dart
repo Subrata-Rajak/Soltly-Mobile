@@ -4,93 +4,98 @@ import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_typography.dart';
 import '../../../services/domain/service_models.dart';
 
-/// Categories section showcasing the top service categories.
-/// Features generous tap targets, soft elevation, and clear typography.
+/// Category shortcut data class mapping each Stitch category to its pastel background and icon.
+class StitchCategoryItem {
+  final String id;
+  final String name;
+  final IconData icon;
+  final Color backgroundColor;
+  final Color iconColor;
+
+  const StitchCategoryItem({
+    required this.id,
+    required this.name,
+    required this.icon,
+    required this.backgroundColor,
+    required this.iconColor,
+  });
+}
+
+/// 4 service category shortcuts matching Google Stitch Home design.
+/// Displays circular pastel icons (Cleaning, AC & Air, Plumbing, Electrical) with clean typography.
 class CategorySection extends StatelessWidget {
-  final List<ServiceCategory> categories;
+  final List<ServiceCategory>? categories;
   final ValueChanged<ServiceCategory>? onCategoryTap;
   final VoidCallback? onViewAllTap;
 
   const CategorySection({
     super.key,
-    required this.categories,
+    this.categories,
     this.onCategoryTap,
     this.onViewAllTap,
   });
 
+  static const List<StitchCategoryItem> stitchCategories = [
+    StitchCategoryItem(
+      id: 'cat_cleaning',
+      name: 'Cleaning',
+      icon: Icons.auto_awesome_rounded,
+      backgroundColor: AppColors.catCleaningBg,
+      iconColor: AppColors.catCleaningIcon,
+    ),
+    StitchCategoryItem(
+      id: 'cat_ac_hvac',
+      name: 'AC & Air',
+      icon: Icons.air_rounded,
+      backgroundColor: AppColors.catAcBg,
+      iconColor: AppColors.catAcIcon,
+    ),
+    StitchCategoryItem(
+      id: 'cat_plumbing',
+      name: 'Plumbing',
+      icon: Icons.water_drop_rounded,
+      backgroundColor: AppColors.catPlumbingBg,
+      iconColor: AppColors.catPlumbingIcon,
+    ),
+    StitchCategoryItem(
+      id: 'cat_electrical',
+      name: 'Electrical',
+      icon: Icons.bolt_rounded,
+      backgroundColor: AppColors.catElectricalBg,
+      iconColor: AppColors.catElectricalIcon,
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Explore Categories',
-                      style: AppTypography.headlineSmall,
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      'Select a category to view verified specialists',
-                      style: AppTypography.bodySmall.copyWith(
-                        color: AppColors.textMuted,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-              TextButton(
-                onPressed: onViewAllTap,
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  visualDensity: VisualDensity.compact,
-                ),
-                child: const Text('See All'),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: AppSpacing.sm),
-        SizedBox(
-          height: 110,
-          child: ListView.separated(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-            scrollDirection: Axis.horizontal,
-            physics: const BouncingScrollPhysics(),
-            itemCount: categories.length,
-            separatorBuilder: (context, index) =>
-                const SizedBox(width: AppSpacing.xs + 2),
-            itemBuilder: (context, index) {
-              final category = categories[index];
-              return _CategoryCard(
-                category: category,
-                onTap: () => onCategoryTap?.call(category),
+    return Padding(
+      padding: AppSpacing.screenPadding,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: stitchCategories.map((item) {
+          return _CategoryShortcutItem(
+            item: item,
+            onTap: () {
+              final category = ServiceCategory(
+                id: item.id,
+                name: item.name,
+                icon: item.icon,
+                serviceCount: 10,
               );
+              onCategoryTap?.call(category);
             },
-          ),
-        ),
-      ],
+          );
+        }).toList(),
+      ),
     );
   }
 }
 
-class _CategoryCard extends StatelessWidget {
-  final ServiceCategory category;
+class _CategoryShortcutItem extends StatelessWidget {
+  final StitchCategoryItem item;
   final VoidCallback onTap;
 
-  const _CategoryCard({required this.category, required this.onTap});
+  const _CategoryShortcutItem({required this.item, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -98,55 +103,32 @@ class _CategoryCard extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-        child: Container(
-          width: 100,
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-            border: Border.all(color: AppColors.border),
-            boxShadow: const [
-              BoxShadow(
-                color: AppColors.shadowSubtle,
-                blurRadius: 6,
-                offset: Offset(0, 2),
-              ),
-            ],
-          ),
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 42,
-                height: 42,
+                width: 62,
+                height: 62,
                 decoration: BoxDecoration(
-                  color: AppColors.primaryContainer,
-                  borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+                  color: item.backgroundColor,
+                  shape: BoxShape.circle,
                 ),
-                child: Icon(category.icon, color: AppColors.primary, size: 22),
+                child: Center(
+                  child: Icon(item.icon, size: 26, color: item.iconColor),
+                ),
               ),
               const SizedBox(height: 8),
               Text(
-                category.name,
+                item.name,
                 style: AppTypography.labelSmall.copyWith(
                   color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 11.5,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
                 ),
                 textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 2),
-              Text(
-                '${category.serviceCount} services',
-                style: AppTypography.bodySmall.copyWith(
-                  color: AppColors.textMuted,
-                  fontSize: 10,
-                  height: 1.1,
-                ),
-                maxLines: 1,
               ),
             ],
           ),

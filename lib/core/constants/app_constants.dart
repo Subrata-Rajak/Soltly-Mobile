@@ -5,4 +5,6 @@ abstract final class AppConstants {
   static const String searchHint = 'Search cleaning, repairs, electrical...';
   static const String defaultCity = 'Metropolitan Area';
   static const String defaultArea = 'Downtown District';
+  static const String defaultLocation = 'San Francisco, CA';
+  static const String homeSearchHint = 'Search home cleaning, repairs, AC...';
 }

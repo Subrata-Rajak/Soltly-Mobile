@@ -4,8 +4,8 @@ import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_typography.dart';
 import '../../../../core/constants/app_constants.dart';
 
-/// Prominent search bar component that serves as the service search entry point.
-/// Designed with subtle depth, soft elevation, and generous tap targets.
+/// Pill search bar component matching Google Stitch Home design.
+/// Features a rounded pill container, search icon, hint text, and filter action icon.
 class ServiceSearchBar extends StatelessWidget {
   final VoidCallback? onTap;
   final VoidCallback? onFilterTap;
@@ -26,40 +26,25 @@ class ServiceSearchBar extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-              border: Border.all(color: AppColors.border),
-              boxShadow: const [
-                BoxShadow(
-                  color: AppColors.shadowMedium,
-                  blurRadius: 14,
-                  offset: Offset(0, 3),
-                ),
-              ],
+              color: const Color(0xFFF1F3F5),
+              borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
+              border: Border.all(color: const Color(0xFFE5E7EB)),
             ),
             child: Row(
               children: [
-                Container(
-                  width: 32,
-                  height: 32,
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryContainer,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.search_rounded,
-                    color: AppColors.primary,
-                    size: 18,
-                  ),
+                const Icon(
+                  Icons.search_rounded,
+                  color: AppColors.textMuted,
+                  size: 21,
                 ),
                 const SizedBox(width: AppSpacing.sm),
                 Expanded(
                   child: Text(
-                    AppConstants.searchHint,
+                    AppConstants.homeSearchHint,
                     style: AppTypography.bodyMedium.copyWith(
                       color: AppColors.textMuted,
                       fontSize: 14,
@@ -69,21 +54,15 @@ class ServiceSearchBar extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: AppSpacing.xs),
-                Container(height: 22, width: 1, color: AppColors.borderSubtle),
-                const SizedBox(width: AppSpacing.xs),
                 InkWell(
                   onTap: onFilterTap ?? onTap,
-                  borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
-                  child: Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: AppColors.surfaceSubtle,
-                      borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
-                    ),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
                     child: const Icon(
                       Icons.tune_rounded,
-                      color: AppColors.textPrimary,
-                      size: 18,
+                      color: AppColors.textSecondary,
+                      size: 20,
                     ),
                   ),
                 ),

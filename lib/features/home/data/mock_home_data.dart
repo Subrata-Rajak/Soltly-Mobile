@@ -62,6 +62,7 @@ abstract final class MockHomeData {
       providerName: 'Apex Clean Pro Crew',
       providerExperience: '5+ years verified • 1,200+ jobs',
       isVerified: true,
+      imageAssetPath: 'assets/images/screen.png',
       inclusions: [
         'Complete kitchen countertop, chimney exterior & cabinet degreasing',
         'Deep sanitization and anti-scale descaling of all bathrooms',
@@ -93,6 +94,7 @@ abstract final class MockHomeData {
       providerName: 'Marcus Vance (HVAC Master)',
       providerExperience: '7+ years experience • Certified Specialist',
       isVerified: true,
+      imageAssetPath: 'assets/images/screen.png',
       inclusions: [
         'High-pressure water jet cleaning of indoor cooling coils',
         'Outdoor unit fin cleaning and debris clearing',
@@ -152,6 +154,7 @@ abstract final class MockHomeData {
       providerName: 'Riverstone Plumbing Works',
       providerExperience: '4+ years verified • 480+ completed jobs',
       isVerified: true,
+      imageAssetPath: 'assets/images/screen.png',
       inclusions: [
         'Inspection of up to 4 faucets or shower mixing valves',
         'Washer and internal O-ring seal replacements',
@@ -435,8 +438,26 @@ abstract final class MockHomeData {
     return result;
   }
 
-  /// Day 1/2 initial state: empty upcoming booking to showcase the intentional empty state.
-  static const UpcomingBooking? activeUpcomingBooking = null;
+  /// Active upcoming booking instance displayed on the Home screen.
+  static const BookingRecord activeUpcomingBookingRecord = BookingRecord(
+    id: 'bk_101',
+    serviceId: 'srv_1',
+    serviceTitle: 'Standard Home Refresh',
+    categoryName: 'Deep Cleaning',
+    providerName: 'Elena R.',
+    providerRating: 5.0,
+    scheduledDateFormatted: 'Tomorrow, Oct 24',
+    scheduledTimeFormatted: '10:00 AM – 12:30 PM',
+    status: 'Confirmed',
+    locationAddress: '742 Evergreen Terrace, Apt 4B',
+    locationNote: 'FRONT DOOR CODE #4812 • APT 4B',
+    price: 95.0,
+    isPast: false,
+  );
+
+  /// Active upcoming booking for legacy UpcomingBooking consumers
+  static UpcomingBooking get activeUpcomingBooking =>
+      activeUpcomingBookingRecord.toUpcomingBooking();
 
   /// Sample upcoming booking instance available for future verification or preview.
   static const UpcomingBooking sampleUpcomingBooking = UpcomingBooking(
@@ -446,5 +467,97 @@ abstract final class MockHomeData {
     scheduledTimeFormatted: 'Tomorrow at 10:30 AM',
     status: 'Confirmed',
     locationAddress: 'Flat 402, Oakwood Residences',
+  );
+
+  /// Stitch-aligned sample upcoming bookings (when active)
+  static const List<BookingRecord> sampleUpcomingBookings = [
+    BookingRecord(
+      id: 'bk_101',
+      serviceId: 'srv_1',
+      serviceTitle: 'Standard Home Refresh',
+      categoryName: 'Deep Cleaning',
+      providerName: 'Elena R.',
+      providerRating: 5.0,
+      scheduledDateFormatted: 'Tomorrow, Oct 24',
+      scheduledTimeFormatted: '10:00 AM – 12:30 PM',
+      status: 'Confirmed',
+      locationAddress: '742 Evergreen Terrace, Apt 4B',
+      locationNote: 'FRONT DOOR CODE #4812 • APT 4B',
+      price: 95.0,
+      isPast: false,
+    ),
+  ];
+
+  /// Stitch-aligned sample past booking history (matching 'Past 3' count)
+  static const List<BookingRecord> samplePastBookings = [
+    BookingRecord(
+      id: 'bk_201',
+      serviceId: 'srv_2',
+      serviceTitle: 'AC Seasonal Tune-Up',
+      categoryName: 'AC & HVAC',
+      providerName: 'Marcus Vance',
+      providerRating: 4.9,
+      scheduledDateFormatted: 'Oct 12, 2026',
+      scheduledTimeFormatted: '2:00 PM – 3:30 PM',
+      status: 'Completed',
+      locationAddress: '742 Evergreen Terrace, Apt 4B',
+      price: 89.0,
+      isPast: true,
+    ),
+    BookingRecord(
+      id: 'bk_202',
+      serviceId: 'srv_4',
+      serviceTitle: 'Drain & Faucet Repair',
+      categoryName: 'Plumbing',
+      providerName: 'David Chen',
+      providerRating: 4.8,
+      scheduledDateFormatted: 'Sep 28, 2026',
+      scheduledTimeFormatted: '11:00 AM – 12:00 PM',
+      status: 'Completed',
+      locationAddress: '742 Evergreen Terrace, Apt 4B',
+      price: 75.0,
+      isPast: true,
+    ),
+    BookingRecord(
+      id: 'bk_203',
+      serviceId: 'srv_1',
+      serviceTitle: 'Whole Home Deep Clean',
+      categoryName: 'Deep Cleaning',
+      providerName: 'Apex Clean Pro Crew',
+      providerRating: 5.0,
+      scheduledDateFormatted: 'Aug 15, 2026',
+      scheduledTimeFormatted: '9:00 AM – 1:00 PM',
+      status: 'Completed',
+      locationAddress: '1200 Market St, Suite 300',
+      price: 120.0,
+      isPast: true,
+    ),
+  ];
+
+  /// Stitch-aligned sample customer profile with saved addresses
+  static const UserProfile sampleUserProfile = UserProfile(
+    id: 'usr_alex',
+    name: 'Alex Morgan',
+    initials: 'AM',
+    email: 'alex.morgan@example.com',
+    phone: '+1 (555) 019-2834',
+    savedAddresses: [
+      SavedAddress(
+        id: 'addr_1',
+        label: 'Home',
+        addressLine: '742 Evergreen Terrace, Apt 4B, Springfield',
+        detailsNote: 'FRONT DOOR CODE #4812 • APT 4B',
+        isDefault: true,
+        icon: Icons.home_rounded,
+      ),
+      SavedAddress(
+        id: 'addr_2',
+        label: 'Studio Workspace',
+        addressLine: '1200 Market St, Suite 300, Downtown',
+        detailsNote: 'BUILDING BUZZER #300',
+        isDefault: false,
+        icon: Icons.business_rounded,
+      ),
+    ],
   );
 }

@@ -3,26 +3,73 @@ import 'package:go_router/go_router.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_spacing.dart';
 import '../../../app/theme/app_typography.dart';
-import '../../../core/constants/app_constants.dart';
+import '../../services/domain/service_models.dart';
 import '../data/mock_home_data.dart';
 import 'widgets/category_section.dart';
 import 'widgets/featured_services_section.dart';
 import 'widgets/home_header.dart';
+import 'widgets/popular_services_section.dart';
 import 'widgets/service_search_bar.dart';
 import 'widgets/trust_banner.dart';
 import 'widgets/upcoming_booking_card.dart';
 
-/// Home Screen for Slotly.
-/// Contains brand header, search entry point, upcoming booking card (with intentional empty state),
-/// category discovery row, featured services list, and trust guarantees.
+/// Home Screen for Slotly matching the Google Stitch visual design.
+/// Features a location selector, two-tone confident headline, rounded search bar,
+/// conditional upcoming booking card, 4 category shortcuts, featured signature care card,
+/// popular right now service list, and Slotly happiness guarantee banner.
 class HomeScreen extends StatelessWidget {
   final VoidCallback? onExploreMoreTap;
   final VoidCallback? onBookingsTap;
+  final UpcomingBooking? upcomingBooking;
+  final BookingRecord? upcomingBookingRecord;
+  final bool hideUpcomingBooking;
 
-  const HomeScreen({super.key, this.onExploreMoreTap, this.onBookingsTap});
+  const HomeScreen({
+    super.key,
+    this.onExploreMoreTap,
+    this.onBookingsTap,
+    this.upcomingBooking,
+    this.upcomingBookingRecord,
+    this.hideUpcomingBooking = false,
+  });
 
   @override
   Widget build(BuildContext context) {
+    // Resolve active booking (preserves empty state if null or explicitly hidden)
+    final BookingRecord? activeRecord;
+    final UpcomingBooking? activeBooking;
+
+    if (hideUpcomingBooking) {
+      activeRecord = null;
+      activeBooking = null;
+    } else if (upcomingBookingRecord != null) {
+      activeRecord = upcomingBookingRecord;
+      activeBooking = upcomingBooking;
+    } else if (upcomingBooking != null) {
+      activeRecord = null;
+      activeBooking = upcomingBooking;
+    } else {
+      activeRecord = MockHomeData.activeUpcomingBookingRecord;
+      activeBooking = null;
+    }
+
+    final hasActiveBooking = activeRecord != null || activeBooking != null;
+
+    // Stitch featured service (Whole Home Deep Clean)
+    final featuredService = MockHomeData.allServices.first;
+
+    // Stitch popular services (AC Seasonal Tune-Up & Drain & Faucet Repair)
+    final popularServices = [
+      MockHomeData.allServices.firstWhere(
+        (s) => s.id == 'srv_2',
+        orElse: () => MockHomeData.allServices[1],
+      ),
+      MockHomeData.allServices.firstWhere(
+        (s) => s.id == 'srv_4',
+        orElse: () => MockHomeData.allServices[3],
+      ),
+    ];
+
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackground,
       body: SafeArea(
@@ -31,82 +78,86 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Top Bar with branding & location
+              // Top Bar with Location Selector & Notifications
               HomeHeader(
                 onLocationTap: () => _showFeedback(
                   context,
-                  'Location selector will be enabled when service zones are configured.',
+                  'Location selector: Currently serving San Francisco, CA.',
                 ),
                 onNotificationTap: () => _showFeedback(
                   context,
                   'No unread alerts. Notifications will appear here.',
                 ),
               ),
-              const SizedBox(height: AppSpacing.sm),
+              const SizedBox(height: 12),
 
-              // Hero Heading & Subtitle
+              // Headline: "Your home in good hands." with "good hands." in cobalt blue
               Padding(
                 padding: AppSpacing.screenPadding,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Book trusted services\non your schedule',
-                      style: AppTypography.displayLarge,
+                child: Text.rich(
+                  TextSpan(
+                    style: AppTypography.displayLarge.copyWith(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w800,
+                      height: 1.15,
+                      letterSpacing: -0.7,
                     ),
-                    const SizedBox(height: 6),
-                    Text(
-                      AppConstants.appTagline,
-                      style: AppTypography.bodyMedium.copyWith(
-                        color: AppColors.textSecondary,
-                        fontSize: 14.5,
+                    children: const [
+                      TextSpan(
+                        text: 'Your home in\n',
+                        style: TextStyle(color: AppColors.textPrimary),
                       ),
-                    ),
-                  ],
+                      TextSpan(
+                        text: 'good hands.',
+                        style: TextStyle(color: AppColors.primary),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: AppSpacing.md + 2),
+              const SizedBox(height: 18),
 
               // Search Bar Entry Point -> Navigates to Explore
               ServiceSearchBar(
-                onTap: () => context.go('/explore'),
-                onFilterTap: () => context.go('/explore'),
-              ),
-              const SizedBox(height: AppSpacing.lg),
-
-              // Upcoming Booking Card (Intentional Empty State)
-              UpcomingBookingCard(
-                booking: MockHomeData.activeUpcomingBooking,
-                onBookNowTap: () {
+                onTap: () {
                   if (onExploreMoreTap != null) {
                     onExploreMoreTap!();
                   } else {
                     context.go('/explore');
                   }
                 },
-                onViewDetailsTap: () {
-                  if (onBookingsTap != null) {
-                    onBookingsTap!();
-                  } else {
-                    context.go('/bookings');
-                  }
-                },
+                onFilterTap: () => context.go('/explore'),
               ),
-              const SizedBox(height: 28),
+              const SizedBox(height: 20),
 
-              // Category Discovery Row -> Navigates to Explore with Category Filter
+              // Upcoming Visit Card (Only shown when an active booking exists)
+              if (hasActiveBooking) ...[
+                UpcomingBookingCard(
+                  booking: activeBooking,
+                  bookingRecord: activeRecord,
+                  onViewDetailsTap: () {
+                    if (onBookingsTap != null) {
+                      onBookingsTap!();
+                    } else {
+                      context.go('/bookings');
+                    }
+                  },
+                ),
+                const SizedBox(height: 22),
+              ],
+
+              // 4 Category Shortcuts Row
               CategorySection(
-                categories: MockHomeData.categories,
                 onCategoryTap: (category) {
                   context.go('/explore?category=${category.id}');
                 },
                 onViewAllTap: () => context.go('/explore'),
               ),
-              const SizedBox(height: 28),
+              const SizedBox(height: 24),
 
-              // Featured Services Section -> Opens Service Detail
+              // Featured Signature Care Card
               FeaturedServicesSection(
-                services: MockHomeData.featuredServices,
+                service: featuredService,
                 onServiceBookTap: (service) {
                   context.push('/services/${service.id}');
                 },
@@ -114,11 +165,21 @@ class HomeScreen extends StatelessWidget {
                   context.push('/services/${service.id}');
                 },
               ),
-              const SizedBox(height: 28),
+              const SizedBox(height: 24),
 
-              // Consumer Trust Banner
+              // Popular Right Now Horizontal Rows
+              PopularServicesSection(
+                services: popularServices,
+                onServiceTap: (service) {
+                  context.push('/services/${service.id}');
+                },
+                onSeeAllTap: () => context.go('/explore'),
+              ),
+              const SizedBox(height: 24),
+
+              // Slotly Happiness Guarantee Banner
               const TrustBanner(),
-              const SizedBox(height: AppSpacing.xxxl),
+              const SizedBox(height: 70),
             ],
           ),
         ),

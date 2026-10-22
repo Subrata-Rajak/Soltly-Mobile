@@ -18,6 +18,8 @@ abstract final class AppSpacing {
   static const double radiusMd = 16.0; // Modern organic squircle curvature
   static const double radiusLg = 20.0;
   static const double radiusXl = 24.0;
+  static const double radiusCard = 18.0;
+  static const double radiusImage = 14.0;
   static const double radiusFull = 999.0;
 
   // Reusable EdgeInsets

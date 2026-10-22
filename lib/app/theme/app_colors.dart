@@ -52,4 +52,30 @@ abstract final class AppColors {
   static const Color infoContainer = Color(0xFFE0F2FE); // Sky 100
   static const Color warning = Color(0xFFD97706); // Amber 600
   static const Color warningContainer = Color(0xFFFEF3C7); // Amber 100
+
+  // Danger / Destructive (Sign Out & Cancellations)
+  static const Color danger = Color(0xFFDC2626); // Red 600
+  static const Color dangerContainer = Color(0xFFFEF2F2); // Red 50
+  static const Color dangerBorder = Color(0xFFFEE2E2); // Red 100
+
+  // Stitch Category Pastel Icon Backgrounds & Accents
+  static const Color catCleaningBg = Color(0xFFEEF2FF); // Soft indigo/blue tint
+  static const Color catCleaningIcon = Color(0xFF4F46E5);
+  static const Color catAcBg = Color(0xFFE6F4EA); // Soft sage/mint tint
+  static const Color catAcIcon = Color(0xFF166534);
+  static const Color catPlumbingBg = Color(0xFFE0F2FE); // Soft cyan/sky tint
+  static const Color catPlumbingIcon = Color(0xFF0369A1);
+  static const Color catElectricalBg = Color(
+    0xFFFFEDD5,
+  ); // Soft warm peach tint
+  static const Color catElectricalIcon = Color(0xFFC2410C);
+  static const Color catAppliancesBg = Color(0xFFE0F7FA); // Soft teal tint
+  static const Color catAppliancesIcon = Color(0xFF0E7490);
+  static const Color catPaintingBg = Color(0xFFF3E8FF); // Soft purple tint
+  static const Color catPaintingIcon = Color(0xFF7E22CE);
+
+  // Profile & Details Container Tints
+  static const Color lavenderContainer = Color(0xFFF3F0FF);
+  static const Color badgeBlueBg = Color(0xFFEEF2FF);
+  static const Color badgeBlueText = Color(0xFF1D4ED8);
 }

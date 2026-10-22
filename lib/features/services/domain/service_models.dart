@@ -51,6 +51,8 @@ class ServiceItem {
   final bool isVerified;
   final String cancellationPolicy;
 
+  final String? imageAssetPath;
+
   const ServiceItem({
     required this.id,
     required this.title,
@@ -71,6 +73,7 @@ class ServiceItem {
     this.isVerified = true,
     this.cancellationPolicy =
         'Free cancellation up to 2 hours before scheduled slot.',
+    this.imageAssetPath,
   });
 
   String get formattedPrice => '$currencySymbol${basePrice.toStringAsFixed(0)}';
@@ -93,5 +96,89 @@ class UpcomingBooking {
     required this.scheduledTimeFormatted,
     required this.status,
     required this.locationAddress,
+  });
+}
+
+/// Structured booking record supporting both Upcoming visits and Past history presentations.
+class BookingRecord {
+  final String id;
+  final String serviceId;
+  final String serviceTitle;
+  final String categoryName;
+  final String providerName;
+  final double providerRating;
+  final String scheduledDateFormatted;
+  final String scheduledTimeFormatted;
+  final String status;
+  final String locationAddress;
+  final String? locationNote;
+  final double price;
+  final bool isPast;
+
+  const BookingRecord({
+    required this.id,
+    required this.serviceId,
+    required this.serviceTitle,
+    required this.categoryName,
+    required this.providerName,
+    this.providerRating = 5.0,
+    required this.scheduledDateFormatted,
+    required this.scheduledTimeFormatted,
+    required this.status,
+    required this.locationAddress,
+    this.locationNote,
+    required this.price,
+    this.isPast = false,
+  });
+
+  /// Compatibility adapter for existing UpcomingBooking consumers
+  UpcomingBooking toUpcomingBooking() {
+    return UpcomingBooking(
+      id: id,
+      serviceTitle: serviceTitle,
+      providerName: providerName,
+      scheduledTimeFormatted:
+          '$scheduledDateFormatted, $scheduledTimeFormatted',
+      status: status,
+      locationAddress: locationAddress,
+    );
+  }
+}
+
+/// Represents a customer saved location/address for home services.
+class SavedAddress {
+  final String id;
+  final String label;
+  final String addressLine;
+  final String? detailsNote;
+  final bool isDefault;
+  final IconData icon;
+
+  const SavedAddress({
+    required this.id,
+    required this.label,
+    required this.addressLine,
+    this.detailsNote,
+    this.isDefault = false,
+    this.icon = Icons.home_rounded,
+  });
+}
+
+/// Customer profile data representation.
+class UserProfile {
+  final String id;
+  final String name;
+  final String initials;
+  final String email;
+  final String phone;
+  final List<SavedAddress> savedAddresses;
+
+  const UserProfile({
+    required this.id,
+    required this.name,
+    required this.initials,
+    required this.email,
+    required this.phone,
+    this.savedAddresses = const [],
   });
 }

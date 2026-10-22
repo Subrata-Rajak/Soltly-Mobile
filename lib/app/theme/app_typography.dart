@@ -79,4 +79,32 @@ abstract final class AppTypography {
     fontWeight: FontWeight.w700,
     letterSpacing: 0.4,
   );
+
+  // Editorial Serif Typography (Google Stitch Header Aesthetic)
+  static const TextStyle displaySerif = TextStyle(
+    fontSize: 26.0,
+    fontWeight: FontWeight.w700,
+    letterSpacing: -0.4,
+    height: 1.25,
+    fontFamilyFallback: ['Georgia', 'serif'],
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle headlineSerif = TextStyle(
+    fontSize: 20.0,
+    fontWeight: FontWeight.w700,
+    letterSpacing: -0.3,
+    height: 1.3,
+    fontFamilyFallback: ['Georgia', 'serif'],
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle titleSerif = TextStyle(
+    fontSize: 17.0,
+    fontWeight: FontWeight.w700,
+    letterSpacing: -0.2,
+    height: 1.35,
+    fontFamilyFallback: ['Georgia', 'serif'],
+    color: AppColors.textPrimary,
+  );
 }

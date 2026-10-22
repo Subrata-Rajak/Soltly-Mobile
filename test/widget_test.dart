@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:slotly/app/router/app_router.dart';
 import 'package:slotly/app/slotly_app.dart';
+import 'package:slotly/features/home/presentation/home_screen.dart';
 
 void main() {
   setUp(() {
@@ -21,11 +22,9 @@ void main() {
     await tester.pumpAndSettle();
 
     // Verify Home screen loaded
-    expect(find.text('Slotly'), findsOneWidget);
-    expect(
-      find.text('Book trusted services\non your schedule'),
-      findsOneWidget,
-    );
+    expect(find.text('San Francisco, CA'), findsOneWidget);
+    expect(find.textContaining('Your home in'), findsOneWidget);
+    expect(find.textContaining('good hands.'), findsOneWidget);
 
     // Navigate to Explore tab
     await tester.tap(find.text('Explore'));
@@ -55,7 +54,7 @@ void main() {
     // Return to Home tab
     await tester.tap(find.text('Home'));
     await tester.pumpAndSettle();
-    expect(find.text('Slotly'), findsOneWidget);
+    expect(find.textContaining('Your home in'), findsOneWidget);
   });
 
   testWidgets(
@@ -294,4 +293,72 @@ void main() {
       findsOneWidget,
     );
   });
+
+  testWidgets(
+    'Home screen renders Stitch categories, featured care card, and conditional visit card',
+    (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(const SlotlyApp());
+      await tester.pumpAndSettle();
+
+      // Verify Top Bar
+      expect(find.text('San Francisco, CA'), findsOneWidget);
+
+      // Verify 4 Category Shortcuts
+      expect(find.text('Cleaning'), findsOneWidget);
+      expect(find.text('AC & Air'), findsOneWidget);
+      expect(find.text('Plumbing'), findsOneWidget);
+      expect(find.text('Electrical'), findsOneWidget);
+
+      // Verify Featured Signature Care Section
+      expect(find.text('FEATURED SIGNATURE CARE'), findsOneWidget);
+      expect(find.text('Top Rated Pro'), findsOneWidget);
+      expect(find.text('Full Home Deep Cleaning'), findsOneWidget);
+      expect(find.text('Book Service'), findsOneWidget);
+
+      // Verify Popular Right Now Section
+      expect(find.text('Popular right now'), findsOneWidget);
+      expect(find.text('Frequently requested by neighbors'), findsOneWidget);
+      expect(find.text('Inverter AC Precision Tune-Up'), findsOneWidget);
+      expect(find.text('Faucet Leak & Pipe Line Overhaul'), findsOneWidget);
+
+      // Verify Slotly Happiness Guarantee
+      expect(find.text('Slotly Happiness Guarantee'), findsOneWidget);
+      expect(
+        find.text("100% money-back if you're not completely delighted."),
+        findsOneWidget,
+      );
+
+      // Verify Upcoming Visit card is displayed with mock booking details
+      expect(find.text('UPCOMING VISIT'), findsOneWidget);
+      expect(find.text('Standard Home Refresh'), findsOneWidget);
+      expect(find.text('Tomorrow, Oct 24'), findsOneWidget);
+      expect(
+        find.textContaining('10:00 AM – 12:30 PM • Elena R. ★ 5.0'),
+        findsOneWidget,
+      );
+
+      // Tapping Upcoming Visit card navigates to the Bookings screen
+      await tester.tap(find.text('UPCOMING VISIT'));
+      await tester.pumpAndSettle();
+      expect(find.text('My Bookings'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'Upcoming Visit card remains hidden when there is genuinely no upcoming booking',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(home: HomeScreen(hideUpcomingBooking: true)),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('UPCOMING VISIT'), findsNothing);
+      expect(find.text('Standard Home Refresh'), findsNothing);
+    },
+  );
 }
