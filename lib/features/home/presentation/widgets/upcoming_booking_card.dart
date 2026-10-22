@@ -4,7 +4,7 @@ import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_typography.dart';
 import '../../../services/domain/service_models.dart';
 
-/// Upcoming appointment preview card featuring an intentional empty state for Day 1.
+/// Upcoming appointment preview card featuring an intentional, polished empty state.
 class UpcomingBookingCard extends StatelessWidget {
   final UpcomingBooking? booking;
   final VoidCallback? onBookNowTap;
@@ -26,30 +26,32 @@ class UpcomingBookingCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
           border: Border.all(color: AppColors.border),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.02),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
+              color: AppColors.shadowSubtle,
+              blurRadius: 10,
+              offset: Offset(0, 2),
             ),
           ],
         ),
-        child: booking == null ? _buildEmptyState(context) : _buildActiveBooking(context, booking!),
+        child: booking == null
+            ? _buildEmptyState(context)
+            : _buildActiveBooking(context, booking!),
       ),
     );
   }
 
   Widget _buildEmptyState(BuildContext context) {
     return Padding(
-      padding: AppSpacing.cardPadding,
+      padding: const EdgeInsets.all(18.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               Container(
-                width: 32,
-                height: 32,
+                width: 36,
+                height: 36,
                 decoration: BoxDecoration(
                   color: AppColors.primaryContainer,
                   borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
@@ -57,20 +59,21 @@ class UpcomingBookingCard extends StatelessWidget {
                 child: const Icon(
                   Icons.event_available_rounded,
                   color: AppColors.primary,
-                  size: 18,
+                  size: 20,
                 ),
               ),
-              const SizedBox(width: AppSpacing.xs),
-              const Text(
-                'Upcoming Booking',
-                style: AppTypography.titleMedium,
-              ),
+              const SizedBox(width: AppSpacing.sm),
+              const Text('Upcoming Booking', style: AppTypography.titleMedium),
               const Spacer(),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.surfaceSubtle,
-                  borderRadius: BorderRadius.circular(AppSpacing.radiusXs),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
+                  border: Border.all(color: AppColors.border),
                 ),
                 child: Text(
                   '0 Active',
@@ -82,12 +85,12 @@ class UpcomingBookingCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: AppSpacing.md),
           Text(
             'No upcoming services scheduled for this week.',
             style: AppTypography.bodyMedium.copyWith(
-              color: AppColors.textSecondary,
-              fontWeight: FontWeight.w500,
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w600,
             ),
           ),
           const SizedBox(height: 4),
@@ -95,19 +98,25 @@ class UpcomingBookingCard extends StatelessWidget {
             'Explore trusted providers below to reserve a certified slot that fits your schedule.',
             style: AppTypography.bodySmall.copyWith(
               color: AppColors.textMuted,
+              height: 1.45,
             ),
           ),
           const SizedBox(height: AppSpacing.md),
           SizedBox(
             width: double.infinity,
-            child: OutlinedButton.icon(
+            child: ElevatedButton.icon(
               onPressed: onBookNowTap,
               icon: const Icon(Icons.add_circle_outline_rounded, size: 18),
               label: const Text('Schedule a Service'),
-              style: OutlinedButton.styleFrom(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryContainer,
                 foregroundColor: AppColors.primary,
-                side: const BorderSide(color: AppColors.primaryLight, width: 1.0),
-                backgroundColor: AppColors.primaryContainer.withValues(alpha: 0.3),
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(vertical: 13),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+                  side: const BorderSide(color: Color(0x331D4ED8)),
+                ),
               ),
             ),
           ),
@@ -118,7 +127,7 @@ class UpcomingBookingCard extends StatelessWidget {
 
   Widget _buildActiveBooking(BuildContext context, UpcomingBooking active) {
     return Padding(
-      padding: AppSpacing.cardPadding,
+      padding: const EdgeInsets.all(18.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -126,19 +135,28 @@ class UpcomingBookingCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.successContainer,
-                  borderRadius: BorderRadius.circular(AppSpacing.radiusXs),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.check_circle_rounded, size: 13, color: AppColors.success),
+                    const Icon(
+                      Icons.check_circle_rounded,
+                      size: 13,
+                      color: AppColors.success,
+                    ),
                     const SizedBox(width: 4),
                     Text(
                       active.status.toUpperCase(),
-                      style: AppTypography.badgeText.copyWith(color: AppColors.success),
+                      style: AppTypography.badgeText.copyWith(
+                        color: AppColors.success,
+                      ),
                     ),
                   ],
                 ),
@@ -155,22 +173,30 @@ class UpcomingBookingCard extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           Text(
             active.serviceTitle,
-            style: AppTypography.titleMedium,
+            style: AppTypography.headlineSmall.copyWith(fontSize: 17),
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: 4),
           Text(
-            'Provider: ${active.providerName}',
-            style: AppTypography.bodySmall,
+            'Specialist: ${active.providerName}',
+            style: AppTypography.bodySmall.copyWith(
+              color: AppColors.textSecondary,
+            ),
           ),
           const SizedBox(height: AppSpacing.xs),
           Row(
             children: [
-              const Icon(Icons.location_on_outlined, size: 14, color: AppColors.textMuted),
+              const Icon(
+                Icons.location_on_outlined,
+                size: 14,
+                color: AppColors.textMuted,
+              ),
               const SizedBox(width: 4),
               Expanded(
                 child: Text(
                   active.locationAddress,
-                  style: AppTypography.bodySmall.copyWith(color: AppColors.textMuted),
+                  style: AppTypography.bodySmall.copyWith(
+                    color: AppColors.textMuted,
+                  ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

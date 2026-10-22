@@ -12,49 +12,67 @@ class TrustBanner extends StatelessWidget {
     return Padding(
       padding: AppSpacing.screenPadding,
       child: Container(
-        padding: AppSpacing.cardPadding,
+        padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: AppColors.primaryContainer.withValues(alpha: 0.5),
+          color: Colors.white,
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-          border: Border.all(color: AppColors.primaryLight.withValues(alpha: 0.3)),
+          border: Border.all(color: AppColors.border),
+          boxShadow: const [
+            BoxShadow(
+              color: AppColors.shadowSubtle,
+              blurRadius: 8,
+              offset: Offset(0, 2),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                const Icon(
-                  Icons.shield_outlined,
-                  color: AppColors.primary,
-                  size: 20,
+                Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryContainer,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.verified_user_rounded,
+                    color: AppColors.primary,
+                    size: 18,
+                  ),
                 ),
-                const SizedBox(width: AppSpacing.xs),
+                const SizedBox(width: AppSpacing.xs + 2),
                 Text(
                   'The Slotly Guarantee',
-                  style: AppTypography.titleSmall.copyWith(
-                    color: AppColors.primary,
+                  style: AppTypography.titleMedium.copyWith(
+                    color: AppColors.textPrimary,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.sm),
+            const SizedBox(height: AppSpacing.md),
             const _GuaranteeItem(
-              icon: Icons.verified_user_outlined,
+              icon: Icons.shield_outlined,
               title: 'Verified Professionals',
-              description: '100% background-checked and skill-evaluated technicians.',
+              description:
+                  '100% background-checked and skill-evaluated technicians.',
             ),
-            const SizedBox(height: AppSpacing.xs),
+            const SizedBox(height: AppSpacing.sm),
             const _GuaranteeItem(
               icon: Icons.price_check_rounded,
               title: 'Transparent Fixed Pricing',
-              description: 'Standardized slot rates with zero unexpected overheads.',
+              description:
+                  'Standardized slot rates with zero unexpected overheads.',
             ),
-            const SizedBox(height: AppSpacing.xs),
+            const SizedBox(height: AppSpacing.sm),
             const _GuaranteeItem(
               icon: Icons.update_rounded,
               title: 'Flexible Rescheduling',
-              description: 'Easily modify or cancel your booking prior to technician dispatch.',
+              description:
+                  'Easily modify or cancel your booking prior to technician dispatch.',
             ),
           ],
         ),
@@ -79,8 +97,16 @@ class _GuaranteeItem extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 16, color: AppColors.primary),
-        const SizedBox(width: AppSpacing.xs),
+        Container(
+          width: 28,
+          height: 28,
+          decoration: BoxDecoration(
+            color: AppColors.surfaceSubtle,
+            shape: BoxShape.circle,
+          ),
+          child: Icon(icon, size: 15, color: AppColors.primary),
+        ),
+        const SizedBox(width: AppSpacing.sm),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,13 +116,16 @@ class _GuaranteeItem extends StatelessWidget {
                 style: AppTypography.labelSmall.copyWith(
                   fontWeight: FontWeight.w700,
                   color: AppColors.textPrimary,
+                  fontSize: 12,
                 ),
               ),
+              const SizedBox(height: 1),
               Text(
                 description,
                 style: AppTypography.bodySmall.copyWith(
-                  fontSize: 11,
+                  fontSize: 11.5,
                   color: AppColors.textSecondary,
+                  height: 1.35,
                 ),
               ),
             ],

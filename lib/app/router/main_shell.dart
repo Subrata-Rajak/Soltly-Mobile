@@ -1,55 +1,26 @@
 import 'package:flutter/material.dart';
-import '../../features/bookings/presentation/bookings_screen.dart';
-import '../../features/home/presentation/home_screen.dart';
-import '../../features/profile/presentation/profile_screen.dart';
-import '../../features/services/presentation/explore_screen.dart';
+import 'package:go_router/go_router.dart';
 
 /// Main scaffold shell coordinating bottom navigation across primary sections:
-/// Home, Explore, Bookings, and Profile.
-class MainShell extends StatefulWidget {
-  const MainShell({super.key});
+/// Home, Explore, Bookings, and Profile using StatefulNavigationShell.
+class MainShell extends StatelessWidget {
+  final StatefulNavigationShell navigationShell;
 
-  @override
-  State<MainShell> createState() => _MainShellState();
-}
-
-class _MainShellState extends State<MainShell> {
-  int _currentIndex = 0;
+  const MainShell({super.key, required this.navigationShell});
 
   void _onDestinationSelected(int index) {
-    if (_currentIndex == index) return;
-    setState(() {
-      _currentIndex = index;
-    });
-  }
-
-  void _goToTab(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
+    navigationShell.goBranch(
+      index,
+      initialLocation: index == navigationShell.currentIndex,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: [
-          HomeScreen(
-            onExploreMoreTap: () => _goToTab(1),
-            onBookingsTap: () => _goToTab(2),
-          ),
-          ExploreScreen(
-            onBackToHomeTap: () => _goToTab(0),
-          ),
-          BookingsScreen(
-            onScheduleTap: () => _goToTab(0),
-          ),
-          const ProfileScreen(),
-        ],
-      ),
+      body: navigationShell,
       bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentIndex,
+        selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: _onDestinationSelected,
         destinations: const [
           NavigationDestination(

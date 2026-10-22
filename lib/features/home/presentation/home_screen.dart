@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_spacing.dart';
 import '../../../app/theme/app_typography.dart';
@@ -11,18 +12,14 @@ import 'widgets/service_search_bar.dart';
 import 'widgets/trust_banner.dart';
 import 'widgets/upcoming_booking_card.dart';
 
-/// Day 1 Home Screen for Slotly.
+/// Home Screen for Slotly.
 /// Contains brand header, search entry point, upcoming booking card (with intentional empty state),
 /// category discovery row, featured services list, and trust guarantees.
 class HomeScreen extends StatelessWidget {
   final VoidCallback? onExploreMoreTap;
   final VoidCallback? onBookingsTap;
 
-  const HomeScreen({
-    super.key,
-    this.onExploreMoreTap,
-    this.onBookingsTap,
-  });
+  const HomeScreen({super.key, this.onExploreMoreTap, this.onBookingsTap});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +27,7 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: AppColors.scaffoldBackground,
       body: SafeArea(
         child: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -45,7 +42,7 @@ class HomeScreen extends StatelessWidget {
                   'No unread alerts. Notifications will appear here.',
                 ),
               ),
-              const SizedBox(height: AppSpacing.xs),
+              const SizedBox(height: AppSpacing.sm),
 
               // Hero Heading & Subtitle
               Padding(
@@ -57,26 +54,23 @@ class HomeScreen extends StatelessWidget {
                       'Book trusted services\non your schedule',
                       style: AppTypography.displayLarge,
                     ),
-                    const SizedBox(height: AppSpacing.xs),
+                    const SizedBox(height: 6),
                     Text(
                       AppConstants.appTagline,
-                      style: AppTypography.bodyMedium,
+                      style: AppTypography.bodyMedium.copyWith(
+                        color: AppColors.textSecondary,
+                        fontSize: 14.5,
+                      ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: AppSpacing.md),
+              const SizedBox(height: AppSpacing.md + 2),
 
-              // Search Bar Entry Point
+              // Search Bar Entry Point -> Navigates to Explore
               ServiceSearchBar(
-                onTap: () => _showFeedback(
-                  context,
-                  'Search indexing will connect to service catalog in upcoming milestones.',
-                ),
-                onFilterTap: () => _showFeedback(
-                  context,
-                  'Service filters will be available with full category navigation.',
-                ),
+                onTap: () => context.go('/explore'),
+                onFilterTap: () => context.go('/explore'),
               ),
               const SizedBox(height: AppSpacing.lg),
 
@@ -87,48 +81,44 @@ class HomeScreen extends StatelessWidget {
                   if (onExploreMoreTap != null) {
                     onExploreMoreTap!();
                   } else {
-                    _showFeedback(
-                      context,
-                      'Select a featured service below to start your reservation.',
-                    );
+                    context.go('/explore');
                   }
                 },
-                onViewDetailsTap: onBookingsTap,
+                onViewDetailsTap: () {
+                  if (onBookingsTap != null) {
+                    onBookingsTap!();
+                  } else {
+                    context.go('/bookings');
+                  }
+                },
               ),
-              const SizedBox(height: AppSpacing.xl),
+              const SizedBox(height: 28),
 
-              // Category Discovery Row
+              // Category Discovery Row -> Navigates to Explore with Category Filter
               CategorySection(
                 categories: MockHomeData.categories,
-                onCategoryTap: (category) => _showFeedback(
-                  context,
-                  'Selected "${category.name}". Category catalog will open in Day 2.',
-                ),
-                onViewAllTap: onExploreMoreTap ??
-                    () => _showFeedback(
-                          context,
-                          'Opening full category catalog...',
-                        ),
+                onCategoryTap: (category) {
+                  context.go('/explore?category=${category.id}');
+                },
+                onViewAllTap: () => context.go('/explore'),
               ),
-              const SizedBox(height: AppSpacing.xl),
+              const SizedBox(height: 28),
 
-              // Featured Services Section
+              // Featured Services Section -> Opens Service Detail
               FeaturedServicesSection(
                 services: MockHomeData.featuredServices,
-                onServiceBookTap: (service) => _showFeedback(
-                  context,
-                  'Selected "${service.title}" (${service.formattedPrice}). Booking flow arrives in upcoming milestones.',
-                ),
-                onServiceCardTap: (service) => _showFeedback(
-                  context,
-                  'Service detail view for "${service.title}" is planned for next phase.',
-                ),
+                onServiceBookTap: (service) {
+                  context.push('/services/${service.id}');
+                },
+                onServiceCardTap: (service) {
+                  context.push('/services/${service.id}');
+                },
               ),
-              const SizedBox(height: AppSpacing.xl),
+              const SizedBox(height: 28),
 
               // Consumer Trust Banner
               const TrustBanner(),
-              const SizedBox(height: AppSpacing.xxl),
+              const SizedBox(height: AppSpacing.xxxl),
             ],
           ),
         ),

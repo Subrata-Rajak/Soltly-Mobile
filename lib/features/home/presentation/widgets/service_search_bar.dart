@@ -5,6 +5,7 @@ import '../../../../app/theme/app_typography.dart';
 import '../../../../core/constants/app_constants.dart';
 
 /// Prominent search bar component that serves as the service search entry point.
+/// Designed with subtle depth, soft elevation, and generous tap targets.
 class ServiceSearchBar extends StatelessWidget {
   final VoidCallback? onTap;
   final VoidCallback? onFilterTap;
@@ -27,53 +28,62 @@ class ServiceSearchBar extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-              border: Border.all(color: AppColors.border, width: 1.0),
-              boxShadow: [
+              border: Border.all(color: AppColors.border),
+              boxShadow: const [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.03),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
+                  color: AppColors.shadowMedium,
+                  blurRadius: 14,
+                  offset: Offset(0, 3),
                 ),
               ],
             ),
             child: Row(
               children: [
-                const Icon(
-                  Icons.search_rounded,
-                  color: AppColors.primary,
-                  size: 22,
+                Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryContainer,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.search_rounded,
+                    color: AppColors.primary,
+                    size: 18,
+                  ),
                 ),
-                const SizedBox(width: AppSpacing.xs),
+                const SizedBox(width: AppSpacing.sm),
                 Expanded(
                   child: Text(
                     AppConstants.searchHint,
                     style: AppTypography.bodyMedium.copyWith(
                       color: AppColors.textMuted,
+                      fontSize: 14,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 const SizedBox(width: AppSpacing.xs),
-                Container(
-                  height: 24,
-                  width: 1,
-                  color: AppColors.border,
-                ),
+                Container(height: 22, width: 1, color: AppColors.borderSubtle),
                 const SizedBox(width: AppSpacing.xs),
                 InkWell(
                   onTap: onFilterTap ?? onTap,
                   borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
                   child: Container(
-                    padding: const EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: AppColors.surfaceSubtle,
+                      borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+                    ),
                     child: const Icon(
                       Icons.tune_rounded,
-                      color: AppColors.textSecondary,
-                      size: 20,
+                      color: AppColors.textPrimary,
+                      size: 18,
                     ),
                   ),
                 ),

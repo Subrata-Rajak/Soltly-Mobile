@@ -15,19 +15,21 @@ abstract final class AppSpacing {
   // Corner Radii
   static const double radiusXs = 6.0;
   static const double radiusSm = 10.0;
-  static const double radiusMd = 14.0;
-  static const double radiusLg = 18.0;
+  static const double radiusMd = 16.0; // Modern organic squircle curvature
+  static const double radiusLg = 20.0;
   static const double radiusXl = 24.0;
   static const double radiusFull = 999.0;
 
   // Reusable EdgeInsets
-  static const EdgeInsets screenPadding = EdgeInsets.symmetric(horizontal: 20.0);
+  static const EdgeInsets screenPadding = EdgeInsets.symmetric(
+    horizontal: 20.0,
+  );
   static const EdgeInsets cardPadding = EdgeInsets.all(16.0);
   static const EdgeInsets compactCardPadding = EdgeInsets.all(12.0);
   static const EdgeInsets sectionHeaderPadding = EdgeInsets.only(
     left: 20.0,
     right: 20.0,
-    top: 24.0,
+    top: 28.0,
     bottom: 12.0,
   );
 }

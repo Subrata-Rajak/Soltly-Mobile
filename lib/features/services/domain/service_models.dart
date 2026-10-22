@@ -15,18 +15,26 @@ class ServiceCategory {
   });
 }
 
-/// Service badge type for home highlights.
-enum ServiceBadgeType {
-  popular,
-  topRated,
-  verified,
-  none,
+/// Service badge type for service cards and highlights.
+enum ServiceBadgeType { popular, topRated, verified, none }
+
+/// Sorting options for service discovery catalog.
+enum ServiceSortOption {
+  recommended('Recommended'),
+  ratingHighToLow('Rating: High to Low'),
+  priceLowToHigh('Price: Low to High'),
+  priceHighToLow('Price: High to Low'),
+  durationShortest('Duration: Shortest');
+
+  final String label;
+  const ServiceSortOption(this.label);
 }
 
-/// Represents an individual bookable service item.
+/// Represents an individual bookable service item with full discovery & detail attributes.
 class ServiceItem {
   final String id;
   final String title;
+  final String categoryId;
   final String categoryName;
   final double rating;
   final int reviewCount;
@@ -36,10 +44,17 @@ class ServiceItem {
   final ServiceBadgeType badgeType;
   final String description;
   final IconData icon;
+  final List<String> inclusions;
+  final List<String> exclusions;
+  final String providerName;
+  final String providerExperience;
+  final bool isVerified;
+  final String cancellationPolicy;
 
   const ServiceItem({
     required this.id,
     required this.title,
+    required this.categoryId,
     required this.categoryName,
     required this.rating,
     required this.reviewCount,
@@ -49,6 +64,13 @@ class ServiceItem {
     this.badgeType = ServiceBadgeType.none,
     required this.description,
     required this.icon,
+    this.inclusions = const [],
+    this.exclusions = const [],
+    this.providerName = 'Certified Slotly Specialist',
+    this.providerExperience = '3+ years experience',
+    this.isVerified = true,
+    this.cancellationPolicy =
+        'Free cancellation up to 2 hours before scheduled slot.',
   });
 
   String get formattedPrice => '$currencySymbol${basePrice.toStringAsFixed(0)}';

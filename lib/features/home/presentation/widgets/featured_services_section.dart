@@ -49,29 +49,33 @@ class FeaturedServicesSection extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.primaryContainer,
-                  borderRadius: BorderRadius.circular(AppSpacing.radiusXs),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
                 ),
                 child: Text(
                   '${services.length} AVAILABLE',
                   style: AppTypography.badgeText.copyWith(
                     color: AppColors.primary,
-                    fontSize: 10,
+                    fontSize: 10.5,
                   ),
                 ),
               ),
             ],
           ),
         ),
-        const SizedBox(height: AppSpacing.sm),
+        const SizedBox(height: AppSpacing.md),
         ListView.separated(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
           itemCount: services.length,
-          separatorBuilder: (context, index) => const SizedBox(height: AppSpacing.sm),
+          separatorBuilder: (context, index) =>
+              const SizedBox(height: AppSpacing.md),
           itemBuilder: (context, index) {
             final service = services[index];
             return ServiceCard(

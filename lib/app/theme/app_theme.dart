@@ -5,7 +5,7 @@ import 'app_spacing.dart';
 import 'app_typography.dart';
 
 /// Central theme configuration for Slotly.
-/// Built with Flutter Material 3, light mode, and a restrained blue accent.
+/// Built with Flutter Material 3, light mode, and a refined cobalt blue accent.
 abstract final class AppTheme {
   static ThemeData get lightTheme {
     final colorScheme = ColorScheme(
@@ -55,33 +55,42 @@ abstract final class AppTheme {
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.onPrimary,
           elevation: 0,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
           ),
-          textStyle: AppTypography.labelLarge.copyWith(color: AppColors.onPrimary),
+          textStyle: AppTypography.labelLarge.copyWith(
+            color: AppColors.onPrimary,
+            fontWeight: FontWeight.w700,
+          ),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.primary,
           elevation: 0,
-          side: const BorderSide(color: AppColors.border, width: 1.2),
+          side: const BorderSide(color: AppColors.border, width: 1.0),
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
           ),
-          textStyle: AppTypography.labelLarge.copyWith(color: AppColors.primary),
+          textStyle: AppTypography.labelLarge.copyWith(
+            color: AppColors.primary,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: AppColors.primary,
-          textStyle: AppTypography.labelLarge.copyWith(color: AppColors.primary),
+          textStyle: AppTypography.labelLarge.copyWith(
+            color: AppColors.primary,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
       navigationBarTheme: NavigationBarThemeData(
-        height: 68,
+        height: 70,
         elevation: 0,
         backgroundColor: Colors.white,
         indicatorColor: AppColors.primaryContainer,
@@ -94,18 +103,19 @@ abstract final class AppTheme {
             );
           }
           return AppTypography.labelSmall.copyWith(
-            color: AppColors.textSecondary,
+            color: AppColors.textMuted,
+            fontWeight: FontWeight.w500,
           );
         }),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
             return const IconThemeData(color: AppColors.primary, size: 24);
           }
-          return const IconThemeData(color: AppColors.textSecondary, size: 24);
+          return const IconThemeData(color: AppColors.textMuted, size: 24);
         }),
       ),
       dividerTheme: const DividerThemeData(
-        color: AppColors.border,
+        color: AppColors.borderSubtle,
         thickness: 1.0,
         space: 1.0,
       ),

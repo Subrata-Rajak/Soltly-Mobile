@@ -4,11 +4,13 @@ import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_typography.dart';
 
 /// Reusable status and category badge for cards and tags.
+/// Designed as a modern capsule pill with refined typography and soft tint surfaces.
 class SlotlyBadge extends StatelessWidget {
   final String label;
   final IconData? icon;
   final Color backgroundColor;
   final Color textColor;
+  final Border? border;
   final EdgeInsetsGeometry padding;
 
   const SlotlyBadge({
@@ -17,7 +19,8 @@ class SlotlyBadge extends StatelessWidget {
     this.icon,
     this.backgroundColor = AppColors.primaryContainer,
     this.textColor = AppColors.onPrimaryContainer,
-    this.padding = const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+    this.border,
+    this.padding = const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
   });
 
   factory SlotlyBadge.popular() {
@@ -53,7 +56,8 @@ class SlotlyBadge extends StatelessWidget {
       padding: padding,
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusXs),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
+        border: border,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -64,7 +68,10 @@ class SlotlyBadge extends StatelessWidget {
           ],
           Text(
             label,
-            style: AppTypography.badgeText.copyWith(color: textColor),
+            style: AppTypography.badgeText.copyWith(
+              color: textColor,
+              fontSize: 10.5,
+            ),
           ),
         ],
       ),

@@ -6,6 +6,7 @@ import '../../../../core/widgets/slotly_badge.dart';
 import '../../../services/domain/service_models.dart';
 
 /// Card component representing an individual bookable service.
+/// Features a modern, un-cluttered layout, clear price callout, and smooth elevation.
 class ServiceCard extends StatelessWidget {
   final ServiceItem service;
   final VoidCallback? onBookTap;
@@ -30,48 +31,55 @@ class ServiceCard extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
             border: Border.all(color: AppColors.border),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.02),
-                blurRadius: 6,
-                offset: const Offset(0, 2),
+                color: AppColors.shadowSubtle,
+                blurRadius: 10,
+                offset: Offset(0, 3),
               ),
             ],
           ),
-          padding: AppSpacing.cardPadding,
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Top Metadata Row: Badge & Category
+              // Top Metadata: Badge & Category Tag
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   _buildBadge(service.badgeType),
                   const Spacer(),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 9,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.surfaceSubtle,
-                      borderRadius: BorderRadius.circular(AppSpacing.radiusXs),
+                      borderRadius: BorderRadius.circular(
+                        AppSpacing.radiusFull,
+                      ),
                     ),
                     child: Text(
                       service.categoryName,
                       style: AppTypography.labelSmall.copyWith(
                         color: AppColors.textSecondary,
                         fontSize: 11,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: AppSpacing.sm),
-              // Title & Leading Icon
+
+              // Title, Icon & Rating
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: 42,
-                    height: 42,
+                    width: 44,
+                    height: 44,
                     decoration: BoxDecoration(
                       color: AppColors.primaryContainer,
                       borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
@@ -89,7 +97,10 @@ class ServiceCard extends StatelessWidget {
                       children: [
                         Text(
                           service.title,
-                          style: AppTypography.titleMedium,
+                          style: AppTypography.titleMedium.copyWith(
+                            fontSize: 16.5,
+                            fontWeight: FontWeight.w700,
+                          ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -124,49 +135,64 @@ class ServiceCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSpacing.xs),
+              const SizedBox(height: AppSpacing.xs + 2),
+
               // Description
               Text(
                 service.description,
                 style: AppTypography.bodySmall.copyWith(
                   color: AppColors.textSecondary,
+                  height: 1.45,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: AppSpacing.sm),
-              const Divider(color: AppColors.borderSubtle),
-              const SizedBox(height: AppSpacing.xs),
-              // Pricing, Duration, and Action
+              const SizedBox(height: AppSpacing.md),
+
+              // Bottom Row: Duration, Price, and Action Button
               Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(
-                        Icons.schedule_rounded,
-                        size: 15,
-                        color: AppColors.textMuted,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        service.formattedDuration,
-                        style: AppTypography.bodySmall.copyWith(
-                          color: AppColors.textSecondary,
-                          fontWeight: FontWeight.w500,
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.surfaceSubtle,
+                      borderRadius: BorderRadius.circular(AppSpacing.radiusXs),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.schedule_rounded,
+                          size: 14,
+                          color: AppColors.textMuted,
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 4),
+                        Text(
+                          service.formattedDuration,
+                          style: AppTypography.bodySmall.copyWith(
+                            color: AppColors.textSecondary,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 11.5,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   const Spacer(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         'Starting at',
                         style: AppTypography.labelSmall.copyWith(
                           color: AppColors.textMuted,
                           fontSize: 10,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
@@ -174,6 +200,7 @@ class ServiceCard extends StatelessWidget {
                         style: AppTypography.titleMedium.copyWith(
                           color: AppColors.primary,
                           fontWeight: FontWeight.w800,
+                          fontSize: 18,
                         ),
                       ),
                     ],
@@ -182,8 +209,12 @@ class ServiceCard extends StatelessWidget {
                   ElevatedButton(
                     onPressed: onBookTap ?? onCardTap,
                     style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                      minimumSize: const Size(0, 36),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 9,
+                      ),
+                      minimumSize: const Size(0, 38),
+                      elevation: 0,
                     ),
                     child: const Text('Book Slot'),
                   ),
